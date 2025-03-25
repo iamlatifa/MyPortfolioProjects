@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.disabled-textarea {
+    background-color: #ccc; /* Change the background color to gray */
+    color: #888; /* Change the text color to a darker gray */
+  }

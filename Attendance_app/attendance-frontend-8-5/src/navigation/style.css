@@ -1,0 +1,17 @@
+.custom-dropdown .dropdown-toggle {
+   background-color: transparent;
+   box-shadow: none;
+   border: none;
+   color: inherit;
+   
+ }
+ .custom-dropdown .dropdown-menu {
+   z-index: 9999; /* Set a high z-index value */
+ }
+ .custom-dropdown .dropdown-toggle:hover,
+ .custom-dropdown .dropdown-toggle:focus {
+   background-color: transparent;
+   box-shadow: none;
+   outline: none;
+   border: none;
+ }
