@@ -7,32 +7,5 @@ This project simulates a real data-processing workflow used in financial institu
 
 ---
 
-## 📌 Features
 
-### 🔍 Data Ingestion
-- Upload **XML** and **CSV** files via API
-- Automatic file validation (type, structure, size)
-- Parsing XML records into structured objects
-
-### 🧹 Data Cleaning & Validation
-- Remove duplicates
-- Standardize formats (dates, numbers, strings)
-- Generate error logs for invalid rows
-- Store cleaned data in Oracle Database
-
-### 📊 Analytics Dashboard (React)
-- Cleaned data preview table
-- Charts:
-  - Records per day
-  - Success vs. error ratio
-  - Field completeness score
-- Summary section with aggregated metrics
-
-### 📁 Exporting
-- Export cleaned data to JSON
-- Export statistics to CSV
-
----
-
-## 🧱 Architecture
 
