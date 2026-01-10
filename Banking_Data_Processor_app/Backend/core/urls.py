@@ -1,8 +1,9 @@
 # URL patterns specific to this app
 
 from django.urls import path
-from . import views
+from .views import upload_file
 
-urlpattern = [
-    path('upload/', views.upload_file, name='upload_file'),
+# URLs always point to a callable (function or class), never to a file(module)
+urlpatterns = [
+    path('upload/', upload_file, name='file'),
 ]
