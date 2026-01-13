@@ -114,3 +114,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_files')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://localhost:5173",
+]

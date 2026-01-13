@@ -4,7 +4,7 @@
 import './App.css'
 
 import DashboardLayout from "./layout/DashboardLayout";
-import UploadFiles from "./pages/UploadFiles";
+import UploadFiles from "./pages/upload_files/UploadFiles";
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import { Typography } from '@mui/material';
 
@@ -16,9 +16,7 @@ function App(){
 
   return (
     <BrowserRouter>
-
     <DashboardLayout>
-
       <Routes>
         <Route path='/' element={<DashboardHome />} />
         <Route path="/upload" element={<UploadFiles />} />

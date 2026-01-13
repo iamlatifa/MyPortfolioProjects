@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions>
+    <transaction>
+        <transaction_id>TXN101</transaction_id>
+        <account_number>ACC2001</account_number>
+        <transaction_date>2025-01-01</transaction_date>
+        <amount>2500.00</amount>
+        <currency>USD</currency>
+        <transaction_type>CREDIT</transaction_type>
+        <description>Monthly salary</description>
+    </transaction>
+    <transaction>
+        <transaction_id>TXN102</transaction_id>
+        <account_number>ACC2001</account_number>
+        <transaction_date>2025-01-02</transaction_date>
+        <amount>-150.75</amount>
+        <currency>USD</currency>
+        <transaction_type>DEBIT</transaction_type>
+        <description>Electricity bill</description>
+    </transaction>
+    <transaction>
+        <transaction_id>TXN103</transaction_id>
+        <account_number>ACC2002</account_number>
+        <transaction_date>2025-01-03</transaction_date>
+        <amount>-50.00</amount>
+        <currency>EUR</currency>
+        <transaction_type>DEBIT</transaction_type>
+        <description>Coffee shop</description>
+    </transaction>
+    <transaction>
+        <transaction_id>TXN104</transaction_id>
+        <account_number>ACC2003</account_number>
+        <transaction_date>2025-01-04</transaction_date>
+        <amount>0.00</amount>
+        <currency>USD</currency>
+        <transaction_type>CREDIT</transaction_type>
+        <description>Zero transaction test</description>
+    </transaction>
+</transactions>

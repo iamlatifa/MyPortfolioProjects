@@ -1,8 +1,9 @@
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import os
 from django.conf import settings
 
-
+@csrf_exempt
 def upload_file(request) :
     if request.method != 'POST' :
         return JsonResponse({ "message": 'Invalid request method' }, status=405)
@@ -20,17 +21,3 @@ def upload_file(request) :
     return JsonResponse({ "message": 'File uploaded successfully', 
                           "file_name": file.name }, 
                         status=201)
-
-
-from tasks.celery_tasks import process_batch
-
-def upload_file(request):
-    batch = create_batch_record()
-    file_path = save_file(request.FILES['file'])
-
-    process_batch.delay(batch.id, file_path)
-
-    return JsonResponse({
-        "batch_id": batch.id,
-        "status": "PROCESSING"
-    })

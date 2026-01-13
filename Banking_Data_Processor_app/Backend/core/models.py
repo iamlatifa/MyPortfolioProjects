@@ -3,8 +3,20 @@ from django.db import models
 
 class Batch(models.Model):
     batch_id = models.BigAutoField(primary_key=True)
+    file_name = models.CharField(max_length=255)
+    file = models.FileField(upload_to="uploaded_files/")
+    stats = models.CharField(
+        max_length=20,
+        choices=[
+            ("PENDING", "Pending")
+            ("PROCESSING", "Processing"),
+            ("SUCCESS", "Success"),
+            ("FAILED", "Failed"),
+        ],
+        default="PENDING"
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    total_transactions = models.IntegerField()
+    total_transactions = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Batch {self.batch_id}"

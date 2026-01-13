@@ -2,58 +2,46 @@ from base_parser import BaseParser
 import xml.etree.ElementTree as ET
 import datetime
 from typing import Any, Dict, List
+from decimal import Decimal,InvalidOperation
 class XMLParser(BaseParser):
     
-
-    def validate_structure(self) -> bool:
-        try:
-            tree = ET.parse(self.file_path)
-            root = tree.getroot()
-
-            # Check if root element is correct
-            if root.tag != 'Transactions':
-                self.add_error(0, 'root', 'Root element must be <Transactions>')
-                return False
-            
-            # Check if there are any transaction elements
-            transactions = root.findall('Transaction')
-            if len(transactions) == 0:
-                self.add_warning(0, 'No Transactions found in file')
-                return False
-            return True
-        except ET.ParseError as e:
-            self.log_error(0, f'XML Parse Error {str(e)}')
+    def validate_structure(self, root:ET.Element) -> bool:
+        # Check if root element is correct
+        if root.tag != 'Transactions':
+            self.add_error(0, 'root', 'Root element must be <Transactions>')
             return False
-        except Exception as e:
-            self.log_error(0, f'Unexpected Error: {str(e)}')
-            return False
+        
+        # Check if there are any transaction elements
+        transactions = root.findall('Transaction')
+        if not transactions:
+            self.add_warning(0, 'No Transactions found in file')
+        
+        return True
+
 
     def parse(self) -> List[Dict[str, Any]]:
-
-        if not self.validate_structure():
-            return []
-        
         transactions = []
 
         try:
             tree = ET.parse(self.file_path)
             root = tree.getroot()
 
-            for line_number, transaction in enumerate(root.findall('Transaction'), start=1):
-                try :
-                    # extract data from xml element
-                    transaction_data = self._extract_transaction(transaction, line_number)
-
-                    if transaction_data:
-                        transactions.append(transaction_data)
-                except Exception as e:
-                    self.log_error(line_number,'transaction', f'Unexpected Error during parsing: {str(e)}')
-                    continue
-            return transactions
-        
         except ET.ParseError as e:
-            self.log_error(0, 'file',f'Fatal XML Parse Error {str(e)}')
+            self.add_error(0,"file",f"XML parse error {str(e)}")
             return []
+        
+        if not self.validate_structure():
+            return []
+        
+
+        for line_number, transaction in enumerate(root.findall('Transaction'), start=1):
+                # extract data from xml element
+                transaction_data = self._extract_transaction(transaction, line_number)
+
+                if transaction_data:
+                    transactions.append(transaction_data)
+                
+        return transactions
         
     def _extract_transaction(self, transaction_elem: ET.Element, line_number: int) -> Dict[str, Any]:
         # extract individual transaction from XML element
@@ -85,16 +73,16 @@ class XMLParser(BaseParser):
 
         # parse amount
         try:
-            amount = float(amount_str)
-        except ValueError:
-            self.log_error(line_number, 'Amount', f'Invalid amount format: {amount_str}')
+            amount = Decimal(amount_str)
+        except InvalidOperation:
+            self.add_error(line_number, 'Amount', f'Invalid amount format: {amount_str}')
             return None
         
         # parse date 
         try:
             transaction_date = datetime.datetime.strptime(transaction_date_str, '%Y-%m-%d').date()
         except ValueError:
-            self.log_error(line_number, 'TransactionDate', f'Invalid date format: {transaction_date_str}. Expected YYYY-MM-DD')
+            self.add_error(line_number, 'TransactionDate', f'Invalid date format: {transaction_date_str}. Expected YYYY-MM-DD')
             return None
         
         # parse type
@@ -103,6 +91,17 @@ class XMLParser(BaseParser):
             if transaction_type not in ['CREDIT', 'DEBIT']:
                 raise ValueError()
         except ValueError:
-            self.log_error(line_number, 'TransactionType', f'Invalid transaction type: {transaction_type}. Must be CREDIT or DEBIT')
+            self.add_error(line_number, 'TransactionType', f'Invalid transaction type: {transaction_type}. Must be CREDIT or DEBIT')
             return None
+        
+        return {
+            "transaction_id" :transaction_id,
+            "account_number" :account_number,
+            "amount" :amount,
+            "excution_date":transaction_date,
+            "transaction_type":transaction_type,
+            "currency":currency,
+            "status":status,
+            "description":description
+        }
         
